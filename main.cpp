@@ -15,7 +15,7 @@ struct Uzytkownik
     string nazwa = "", haslo = "";
 };
 
-struct Osoba
+struct Adresat
 {
     int id = 0;
     string imie = "", nazwisko = "", numerTelefonu ="", email ="", adres ="";
@@ -50,9 +50,9 @@ char wczytajZnak()
 
 int main()
 {
-    vector <Osoba> osoby;
+    vector <Adresat> adresaci;
     vector <Uzytkownik> uzytkownicy;
-    Osoba osoba;
+    Adresat adresat;
     Uzytkownik uzytkownik;
     char wybor;
     int numerKolejnegoId = 0;
