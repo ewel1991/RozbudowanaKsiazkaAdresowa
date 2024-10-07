@@ -157,12 +157,11 @@ int rejestracja (vector <Uzytkownik> &uzytkownicy, int iloscUzytkownikow)
 
 	cout << "Podaj haslo:";
 	uzytkownik.haslo = wczytajLinie();
-
-	uzytkownik.id = iloscUzytkownikow+1;
-
+    uzytkownik.id = iloscUzytkownikow+1;
 	uzytkownicy.push_back(uzytkownik);
-	cout << "Konto zalozone" << endl;
-	Sleep(1000);
+	cout << endl;
+	cout << "Konto zalozone" << endl << endl;
+	system("pause");
 
     dodajUzytkownikaDoPliku(uzytkownik);
 	return iloscUzytkownikow+1;
