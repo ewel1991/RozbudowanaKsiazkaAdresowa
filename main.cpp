@@ -187,7 +187,7 @@ int logowanie (vector <Uzytkownik> &uzytkownicy, int iloscUzytkownikow)
             	{
                 	cout << "Zalogowales sie." << endl;
                 	Sleep(1000);
-                	return uzytkownik. id;
+                	return uzytkownik.id;
             	}
         	}
         	cout << "Podales 3 razy bledne haslo. Poczekaj 3 sekundy przed kolejna proba" << endl;
@@ -276,7 +276,7 @@ int wczytajAdresatowZPliku (vector <Adresat> &adresaci, vector <Uzytkownik> &uzy
 }
 
 
-void dodajAdresataDoPliku (Adresat adresat, Uzytkownik uzytkownik)
+void dodajAdresataDoPliku (Adresat adresat, int idZalogowanegoUzytkownika)
 {
     fstream plik;
     plik.open("KsiazkaAdresowa.txt", ios::out | ios::app);
@@ -284,7 +284,7 @@ void dodajAdresataDoPliku (Adresat adresat, Uzytkownik uzytkownik)
     if (plik.good() == true)
     {
         plik << adresat.id << "|";
-        plik << uzytkownik.id << "|";
+        plik << idZalogowanegoUzytkownika << "|";
         plik << adresat.imie << "|";
         plik << adresat.nazwisko << "|";
         plik << adresat.numerTelefonu << "|";
@@ -301,12 +301,15 @@ void dodajAdresataDoPliku (Adresat adresat, Uzytkownik uzytkownik)
 
 
 
-int dodajAdresata (vector <Adresat> &adresaci, vector <Uzytkownik> &uzytkownicy, int numerKolejnegoId)
+int dodajAdresata (vector <Adresat> &adresaci, int numerKolejnegoId, int idZalogowanegoUzytkownika)
 {
     Adresat adresat;
     Uzytkownik uzytkownik;
 
     adresat.id = numerKolejnegoId + 1;
+
+    cout << "Wpisujesz adresatow dla uzytkownika o id:";
+    cout << idZalogowanegoUzytkownika << endl;
 
     cout <<"Podaj imie: ";
     adresat.imie = wczytajLinie();
@@ -332,7 +335,7 @@ int dodajAdresata (vector <Adresat> &adresaci, vector <Uzytkownik> &uzytkownicy,
 
     system("pause");
 
-    dodajAdresataDoPliku(adresat, uzytkownik);
+    dodajAdresataDoPliku(adresat, idZalogowanegoUzytkownika);
 
     return numerKolejnegoId;
 }
@@ -371,7 +374,6 @@ int main()
             cout << "Twoj wybor: ";
 
             wybor = wczytajZnak();
-            numerKolejnegoId = wczytajAdresatowZPliku(adresaci, uzytkownicy);
 
             if (wybor == '1')
             {
@@ -403,10 +405,13 @@ int main()
             cout << "---------------------" << endl;
             cout << "Twoj wybor: ";
 
+            numerKolejnegoId = wczytajAdresatowZPliku(adresaci, uzytkownicy);
+
+
             cin >> wybor;
             if (wybor == '1')
             {
-                numerKolejnegoId= dodajAdresata(adresaci, uzytkownicy, numerKolejnegoId);
+                numerKolejnegoId= dodajAdresata(adresaci, numerKolejnegoId, idZalogowanegoUzytkownika);
             }
             else if (wybor == '2')
             {
@@ -435,7 +440,6 @@ int main()
             else if (wybor == '8')
             {
                 idZalogowanegoUzytkownika = 0;
-                exit(0);
             }
         }
 
