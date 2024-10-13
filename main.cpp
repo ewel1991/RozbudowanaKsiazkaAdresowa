@@ -104,10 +104,6 @@ int wczytajOsobyZPlikuUzytkownicy (vector <Uzytkownik> &uzytkownicy)
 }
 
 
-
-
-
-
 void dodajUzytkownikaDoPliku (Uzytkownik uzytkownik)
 {
     fstream plik;
@@ -279,6 +275,32 @@ int wczytajAdresatowZPliku (vector <Adresat> &adresaci, vector <Uzytkownik> &uzy
     return ostatniNumerId = adresat.id;
 }
 
+
+void dodajAdresataDoPliku (Adresat adresat, Uzytkownik uzytkownik)
+{
+    fstream plik;
+    plik.open("KsiazkaAdresowa.txt", ios::out | ios::app);
+
+    if (plik.good() == true)
+    {
+        plik << adresat.id << "|";
+        plik << uzytkownik.id << "|";
+        plik << adresat.imie << "|";
+        plik << adresat.nazwisko << "|";
+        plik << adresat.numerTelefonu << "|";
+        plik << adresat.email << "|";
+        plik << adresat.adres << "|" <<endl;
+    }
+    else
+    {
+        cout << "Nie udalo sie otworzyc pliku i zapisac do niego danych." << endl;
+        system("pause");
+    }
+    plik.close();
+}
+
+
+
 int dodajAdresata (vector <Adresat> &adresaci, vector <Uzytkownik> &uzytkownicy, int numerKolejnegoId)
 {
     Adresat adresat;
@@ -310,7 +332,7 @@ int dodajAdresata (vector <Adresat> &adresaci, vector <Uzytkownik> &uzytkownicy,
 
     system("pause");
 
-    //dodajOsobeDoPliku(adresat);
+    dodajAdresataDoPliku(adresat, uzytkownik);
 
     return numerKolejnegoId;
 }
