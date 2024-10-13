@@ -127,81 +127,81 @@ void dodajUzytkownikaDoPliku (Uzytkownik uzytkownik)
 int rejestracja (vector <Uzytkownik> &uzytkownicy, int iloscUzytkownikow)
 {
     string nazwa;
-	Uzytkownik uzytkownik;
-	cout <<"Podaj nazwe uzytkownika: ";
-	nazwa = wczytajLinie();
+    Uzytkownik uzytkownik;
+    cout <<"Podaj nazwe uzytkownika: ";
+    nazwa = wczytajLinie();
 
-	int i = 0;
-	while ( i < iloscUzytkownikow )
-	{
-	    for (Uzytkownik uzytkownik: uzytkownicy)
+    int i = 0;
+    while ( i < iloscUzytkownikow )
+    {
+        for (Uzytkownik uzytkownik: uzytkownicy)
         {
             if (uzytkownik.nazwa == nazwa)
-    	{
-        	cout << "Taki uzytkownik istnieje. Wpisz inna nazwe uzytkownika: ";
-        	nazwa = wczytajLinie();
-        	i = 0;
-    	}
-    	else
-    	{
-        	i++;
-    	}
+            {
+                cout << "Taki uzytkownik istnieje. Wpisz inna nazwe uzytkownika: ";
+                nazwa = wczytajLinie();
+                i = 0;
+            }
+            else
+            {
+                i++;
+            }
         }
 
-	}
-	uzytkownik.nazwa = nazwa;
+    }
+    uzytkownik.nazwa = nazwa;
 
-	cout << "Podaj haslo:";
-	uzytkownik.haslo = wczytajLinie();
+    cout << "Podaj haslo:";
+    uzytkownik.haslo = wczytajLinie();
     uzytkownik.id = iloscUzytkownikow+1;
-	uzytkownicy.push_back(uzytkownik);
-	cout << endl;
-	cout << "Konto zalozone" << endl << endl;
-	system("pause");
+    uzytkownicy.push_back(uzytkownik);
+    cout << endl;
+    cout << "Konto zalozone" << endl << endl;
+    system("pause");
 
     dodajUzytkownikaDoPliku(uzytkownik);
-	return iloscUzytkownikow+1;
+    return iloscUzytkownikow+1;
 }
 
 int logowanie (vector <Uzytkownik> &uzytkownicy, int iloscUzytkownikow)
 {
-	Uzytkownik uzytkownik;
-	string login = "", haslo = "";
-	cout << "Podaj login: ";
-	login = wczytajLinie();
+    Uzytkownik uzytkownik;
+    string login = "", haslo = "";
+    cout << "Podaj login: ";
+    login = wczytajLinie();
 
 
-	int i = 0;
-	while ( i < iloscUzytkownikow )
-	{
-	    for (Uzytkownik uzytkownik: uzytkownicy)
+    int i = 0;
+    while ( i < iloscUzytkownikow )
+    {
+        for (Uzytkownik uzytkownik: uzytkownicy)
         {
-           if (uzytkownik.nazwa == login)
-    	{
+            if (uzytkownik.nazwa == login)
+            {
 
-        	for (int proby = 0; proby < 3; proby++)
-        	{
-            	cout << "Podaj haslo. Pozostalo prob " << 3-proby << ": ";
-            	haslo = wczytajLinie();
-            	if (uzytkownik.haslo == haslo)
-            	{
-                	cout << "Zalogowales sie." << endl;
-                	Sleep(1000);
-                	return uzytkownik.id;
-            	}
-        	}
-        	cout << "Podales 3 razy bledne haslo. Poczekaj 3 sekundy przed kolejna proba" << endl;
-        	Sleep(3000);
-        	return 0;
-    	}
-    	i++;
+                for (int proby = 0; proby < 3; proby++)
+                {
+                    cout << "Podaj haslo. Pozostalo prob " << 3-proby << ": ";
+                    haslo = wczytajLinie();
+                    if (uzytkownik.haslo == haslo)
+                    {
+                        cout << "Zalogowales sie." << endl;
+                        Sleep(1000);
+                        return uzytkownik.id;
+                    }
+                }
+                cout << "Podales 3 razy bledne haslo. Poczekaj 3 sekundy przed kolejna proba" << endl;
+                Sleep(3000);
+                return 0;
+            }
+            i++;
         }
 
 
-	}
-	cout << "Nie ma uzytkownika z takim loginem" << endl;
-	Sleep(1500);
-	return 0;
+    }
+    cout << "Nie ma uzytkownika z takim loginem" << endl;
+    Sleep(1500);
+    return 0;
 }
 
 int wczytajAdresatowZPliku (vector <Adresat> &adresaci, vector <Uzytkownik> &uzytkownicy)
@@ -348,28 +348,73 @@ int dodajAdresata (vector <Adresat> &adresaci, int numerKolejnegoId, int idZalog
 }
 
 
+
+void wyszukajPoImieniu(vector <Adresat> &adresaci, int idZalogowanegoUzytkownika)
+{
+    Adresat adresat;
+    string poszukiwaneImie = "";
+    int liczbaTakichSamychImion = 0;
+
+    cout << "Podaj imie, ktore chcesz wyszukac: ";
+
+    poszukiwaneImie = wczytajLinie();
+
+    cout << endl;
+
+    if (adresaci.size()== 0)
+    {
+        cout << "Plik nie zostal jeszcze stworzony" << endl << endl;
+    }
+    else
+    {
+        for (Adresat adresat : adresaci)
+        {
+                if ( (idZalogowanegoUzytkownika == adresat.idUzytkownika) && (adresat.imie == poszukiwaneImie))
+                {
+                    cout << setw(25)<< left <<"Id: "             << adresat.id<< endl;
+                    cout << setw(25)<< left <<"Imie: "           << adresat.imie<< endl;
+                    cout << setw(25)<< left <<"Nazwisko: "       << adresat.nazwisko << endl;
+                    cout << setw(25)<< left <<"Numer telefonu: " << adresat.numerTelefonu<< endl;
+                    cout << setw(25)<< left <<"Email:"           << adresat.email<< endl;
+                    cout << setw(25)<< left <<"Adres:"           << adresat.adres<< endl << endl;
+                    liczbaTakichSamychImion++;
+                }
+
+
+        }
+         if (liczbaTakichSamychImion == 0)
+            {
+                cout << "Na liscie nie ma osoba o takim imieniu" << endl << endl;
+            }
+
+
+    }
+
+    system("pause");
+}
+
 void wyswietlWszystkichAdresatow(vector <Adresat> &adresaci, int idZalogowanegoUzytkownika)
 {
     Adresat adresat;
 
     for (Adresat adresat : adresaci)
     {
-       if ( idZalogowanegoUzytkownika == adresat.idUzytkownika)
-       {
-        cout << setw(25)<< left <<"Id: "              << adresat.id<< endl;
-        cout << setw(25)<< left <<"Imie: "            << adresat.imie<< endl;
-        cout << setw(25)<< left <<"Nazwisko: "        << adresat.nazwisko << endl;
-        cout << setw(25)<< left <<"Numer telefonu: "  << adresat.numerTelefonu<< endl;
-        cout << setw(25)<< left <<"Email:"            << adresat.email<< endl;
-        cout << setw(25)<< left <<"Adres:"            << adresat.adres<< endl << endl;
+        if ( idZalogowanegoUzytkownika == adresat.idUzytkownika)
+        {
+            cout << setw(25)<< left <<"Id: "              << adresat.id<< endl;
+            cout << setw(25)<< left <<"Imie: "            << adresat.imie<< endl;
+            cout << setw(25)<< left <<"Nazwisko: "        << adresat.nazwisko << endl;
+            cout << setw(25)<< left <<"Numer telefonu: "  << adresat.numerTelefonu<< endl;
+            cout << setw(25)<< left <<"Email:"            << adresat.email<< endl;
+            cout << setw(25)<< left <<"Adres:"            << adresat.adres<< endl << endl;
 
-    }
+        }
 
 
-    if (adresaci.size() == 0)
-    {
-        cout << "Plik nie zostal jeszcze stworzony" << endl << endl;
-    }
+        if (adresaci.size() == 0)
+        {
+            cout << "Plik nie zostal jeszcze stworzony" << endl << endl;
+        }
     }
     system("pause");
 }
@@ -447,7 +492,7 @@ int main()
             }
             else if (wybor == '2')
             {
-                //
+                wyszukajPoImieniu(adresaci, idZalogowanegoUzytkownika);
             }
             else if (wybor == '3')
             {
