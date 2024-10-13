@@ -167,6 +167,49 @@ int rejestracja (vector <Uzytkownik> &uzytkownicy, int iloscUzytkownikow)
 	return iloscUzytkownikow+1;
 }
 
+int logowanie (vector <Uzytkownik> &uzytkownicy, int iloscUzytkownikow)
+{
+	Uzytkownik uzytkownik;
+	string login = "", haslo = "";
+	cout << "Podaj login: ";
+	login = wczytajLinie();
+
+
+	int i = 0;
+	while ( i < iloscUzytkownikow )
+	{
+	    for (Uzytkownik uzytkownik: uzytkownicy)
+        {
+           if (uzytkownik.nazwa == login)
+    	{
+
+        	for (int proby = 0; proby < 3; proby++)
+        	{
+            	cout << "Podaj haslo. Pozostalo prob " << 3-proby << ": ";
+            	haslo = wczytajLinie();
+            	if (uzytkownik.haslo == haslo)
+            	{
+                	cout << "Zalogowales sie." << endl;
+                	Sleep(1000);
+                	return uzytkownik. id;
+            	}
+        	}
+        	cout << "Podales 3 razy bledne haslo. Poczekaj 3 sekundy przed kolejna proba" << endl;
+        	Sleep(3000);
+        	return 0;
+    	}
+    	i++;
+        }
+
+
+	}
+	cout << "Nie ma uzytkownika z takim loginem" << endl;
+	Sleep(1500);
+	return 0;
+}
+
+
+
 
 int main()
 {
@@ -202,7 +245,7 @@ int main()
             }
             else if (wybor == '2')
             {
-                //idZalogowanegoUzytkownika = logowanie (uzytkownicy, iloscUzytkownikow );
+                idZalogowanegoUzytkownika = logowanie (uzytkownicy, iloscUzytkownikow );
             }
             else if (wybor == '9')
             {
@@ -255,6 +298,7 @@ int main()
             }
             else if (wybor == '8')
             {
+                idZalogowanegoUzytkownika = 0
                 exit(0);
             }
         }
