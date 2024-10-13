@@ -279,6 +279,43 @@ int wczytajAdresatowZPliku (vector <Adresat> &adresaci, vector <Uzytkownik> &uzy
     return ostatniNumerId = adresat.id;
 }
 
+int dodajAdresata (vector <Adresat> &adresaci, vector <Uzytkownik> &uzytkownicy, int numerKolejnegoId)
+{
+    Adresat adresat;
+    Uzytkownik uzytkownik;
+
+    adresat.id = numerKolejnegoId + 1;
+
+    cout <<"Podaj imie: ";
+    adresat.imie = wczytajLinie();
+
+    cout <<"Podaj nazwisko: ";
+    adresat.nazwisko = wczytajLinie();
+
+    cout <<"Podaj numer telefonu: ";
+    adresat.numerTelefonu = wczytajLinie();
+
+    cout <<"Podaj email: ";
+    adresat.email = wczytajLinie();
+
+    cout <<"Podaj adres: ";
+    adresat.adres = wczytajLinie();
+
+    cout << endl;
+    cout << "Osoba zostala dodana" << endl;
+
+    numerKolejnegoId++;
+
+    adresaci.push_back(adresat);
+
+    system("pause");
+
+    //dodajOsobeDoPliku(adresat);
+
+    return numerKolejnegoId;
+}
+
+
 
 
 
@@ -345,7 +382,7 @@ int main()
             cin >> wybor;
             if (wybor == '1')
             {
-                //numerKolejnegoId= dodajAdresata(adresaci, numerKolejnegoId);
+                numerKolejnegoId= dodajAdresata(adresaci, uzytkownicy, numerKolejnegoId);
             }
             else if (wybor == '2')
             {
