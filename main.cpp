@@ -400,6 +400,8 @@ int main()
             cout << "---------------------" << endl;
             cout << "7. Zmian haslo" << endl;
             cout << "8. Wyloguj sie" << endl;
+            cout << "---------------------" << endl;
+            cout << "Twoj wybor: ";
 
             cin >> wybor;
             if (wybor == '1')
