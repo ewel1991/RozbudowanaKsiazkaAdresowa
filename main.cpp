@@ -26,8 +26,10 @@ char wczytajZnak()
     string wejscie = "";
     char znak = {0};
 
+    cin.sync();
     while (true)
     {
+
         getline(cin, wejscie);
 
         if (wejscie.length() == 1)
@@ -48,6 +50,26 @@ string wczytajLinie()
     getline(cin, wejscie);
     return wejscie;
 }
+
+int wczytajLiczbeCalkowita()
+{
+    string wejscie;
+    int liczba;
+
+    while(true)
+    {
+        getline(cin, wejscie);
+        stringstream myStream(wejscie);
+
+        if (myStream >> liczba)
+        {
+            break;
+        }
+        cout << "To nie jest liczba. Wpisz ponownie." << endl;
+    }
+    return liczba;
+}
+
 
 int wczytajOsobyZPlikuUzytkownicy (vector <Uzytkownik> &uzytkownicy)
 {
@@ -276,12 +298,6 @@ int wczytajAdresatowZPliku (vector <Adresat> &adresaci, vector <Uzytkownik> &uzy
 }
 
 
-
-
-
-
-
-
 void dodajAdresataDoPliku (Adresat adresat)
 {
     fstream plik;
@@ -444,6 +460,7 @@ void wyswietlWszystkichAdresatow(vector <Adresat> &adresaci, int idZalogowanegoU
 {
     Adresat adresat;
 
+    cout << endl;
     for (Adresat adresat : adresaci)
     {
         if ( idZalogowanegoUzytkownika == adresat.idUzytkownika)
@@ -465,6 +482,80 @@ void wyswietlWszystkichAdresatow(vector <Adresat> &adresaci, int idZalogowanegoU
     }
     system("pause");
 }
+
+void nadpiszPlikAdresaci (vector <Adresat> &adresaci )
+{
+    Adresat adresat;
+
+    fstream plik3;
+    plik3.open("temp.txt", ios::out);
+
+    if (plik3.good() == true)
+    {
+        for (Adresat adresat: adresaci)
+        {
+            plik3 << adresat.id << "|";
+            plik3 << adresat.idUzytkownika << "|";
+            plik3 << adresat.imie << "|";
+            plik3 << adresat.nazwisko << "|";
+            plik3 << adresat.numerTelefonu << "|";
+            plik3 << adresat.email << "|";
+            plik3 << adresat.adres << "|"  << endl;
+        }
+    }
+    else
+    {
+        cout << "Nie udalo sie otworzyc pliku i zapisac do niego danych." << endl;
+        system("pause");
+    }
+    plik3.close();
+
+    remove("KsiazkaAdresowa.txt");
+    rename("temp.txt", "KsiazkaAdresowa.txt");
+}
+
+
+void usunAdresata (vector <Adresat> &adresaci, int idZalogowanegoUzytkownika)
+{
+    Adresat adresat;
+    char idDoUsuniecia, potwierdzenieWyboru;
+
+
+    cout << "Podaj id osoby, ktora chcesz usunac: ";
+    idDoUsuniecia = wczytajLiczbeCalkowita();
+    cout << endl;
+
+    cout << "Potwierdz usuniecie danego adresata, wciskajac klawisz 't': ";
+    potwierdzenieWyboru = wczytajZnak();
+    cout << endl;
+
+    if (potwierdzenieWyboru == 't')
+    {
+        for (vector <Adresat> :: iterator itr = adresaci.begin(); itr!= adresaci.end(); itr++)
+        {
+            if ((itr -> id == idDoUsuniecia) && (itr -> idUzytkownika == idZalogowanegoUzytkownika))
+            {
+                adresaci.erase(itr);
+                if (itr == adresaci.end())
+                {
+                    break;
+                }
+            }
+        }
+
+    }
+    else
+    {
+        cout << "Nieprawidlowy klawisz. Adresat nie zostal usuniety" << endl;
+    }
+
+    nadpiszPlikAdresaci(adresaci);
+    system("pause");
+}
+
+
+
+
 
 void nadpiszPlikUzytkownik (vector <Uzytkownik> &uzytkownicy)
 {
@@ -593,7 +684,7 @@ int main()
             }
             else if (wybor == '5')
             {
-                //
+                usunAdresata (adresaci, idZalogowanegoUzytkownika);
             }
             else if (wybor == '6')
             {
