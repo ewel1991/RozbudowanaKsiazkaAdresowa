@@ -56,6 +56,7 @@ int wczytajLiczbeCalkowita()
     string wejscie;
     int liczba;
 
+    cin.sync();
     while(true)
     {
         getline(cin, wejscie);
@@ -553,7 +554,76 @@ void usunAdresata (vector <Adresat> &adresaci, int idZalogowanegoUzytkownika)
     system("pause");
 }
 
+void zmienDaneAdresata (vector <Adresat> &adresaci, int idZalogowanegoUzytkownika)
+{
+    Adresat adresat;
+    char wyborOpcji;
+    char wybor;
 
+    cout << "Wpisz id adresata, ktorego dane chcesz zmienic: ";
+    wybor = wczytajLiczbeCalkowita();
+    cout << endl;
+
+
+    cout << ">>> OPCJE DO ZMIANY <<<" << endl;
+    cout << "1. Imie" << endl;
+    cout << "2. Nazwisko" << endl;
+    cout << "3. Numer telefonu" << endl;
+    cout << "4. Email" << endl;
+    cout << "5. Adres" << endl;
+    cout << "6. Powrot do menu" << endl << endl;
+
+    cout << "Wybierz, ktora dana chcesz zmienic: ";
+    wyborOpcji = wczytajZnak();
+    cout << endl;
+
+    for (vector <Adresat> :: iterator itr = adresaci.begin(); itr!= adresaci.end(); itr++)
+    {
+        if ((itr -> id == wybor) && (itr -> idUzytkownika == idZalogowanegoUzytkownika))
+        {
+            switch (wyborOpcji)
+            {
+            case '1':
+                cout << "Podaj imie do zmiany: ";
+                itr -> imie = wczytajLinie();
+                cout << endl;
+                cout << "Dane adresata zostaly zmienione" << endl;
+                break;
+            case '2':
+                cout << "Podaj nazwisko do zmiany: ";
+                itr -> nazwisko = wczytajLinie();
+                cout << endl;
+                cout << "Dane adresata zostaly zmienione" << endl;
+                break;
+            case '3':
+                cout << "Podaj numer telefonu do zmiany: ";
+                itr -> numerTelefonu = wczytajLinie();
+                cout << endl;
+                cout << "Dane adresata zostaly zmienione" << endl;
+                break;
+            case '4':
+                cout << "Podaj email do zmiany";
+                itr -> email = wczytajLinie();
+                cout << endl;
+                cout << "Dane adresata zostaly zmienione" << endl;
+                break;
+            case '5':
+                cout << "Podaj adres do zmiany";
+                itr -> adres = wczytajLinie();
+                cout << endl;
+                cout << "Dane adresata zostaly zmienione" << endl;
+                break;
+            case '6':
+                break;
+
+            }
+        }
+    }
+
+    nadpiszPlikAdresaci(adresaci);
+    system("pause");
+
+}
 
 
 
@@ -688,7 +758,7 @@ int main()
             }
             else if (wybor == '6')
             {
-                //
+                zmienDaneAdresata (adresaci, idZalogowanegoUzytkownika);
             }
             else if (wybor == '7')
             {
