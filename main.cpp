@@ -208,6 +208,80 @@ int logowanie (vector <Uzytkownik> &uzytkownicy, int iloscUzytkownikow)
 	return 0;
 }
 
+int wczytajAdresatowZPliku (vector <Adresat> &adresaci, vector <Uzytkownik> &uzytkownicy)
+{
+    Adresat adresat;
+    Uzytkownik uzytkownik;
+    string linia = "", wyraz = "";
+    int nrKreski = 0, ostatniNumerId = 0;
+
+    fstream plik;
+    plik.open("KsiazkaAdresowa.txt", ios::in);
+
+    if (plik.good() == false)
+    {
+        return 0;
+    }
+    while (getline(plik, linia))
+    {
+
+        for (int i = 0; i < linia.length(); i++)
+        {
+
+            if (linia[i] != '|')
+            {
+                wyraz += linia [i];
+            }
+
+            else
+            {
+                nrKreski ++;
+
+
+                switch (nrKreski)
+                {
+                case 1:
+                    adresat.id = stoi(wyraz);
+                    wyraz = "";
+                    break;
+                case 2:
+                    uzytkownik.id = stoi(wyraz);
+                    wyraz = "";
+                    break;
+                case 3:
+                    adresat.imie = wyraz;
+                    wyraz = "";
+                    break;
+                case 4:
+                    adresat.nazwisko = wyraz;
+                    wyraz = "";
+                    break;
+                case 5:
+                    adresat.numerTelefonu = wyraz;
+                    wyraz = "";
+                    break;
+                case 6:
+                    adresat.email= wyraz;
+                    wyraz = "";
+                    break;
+                case 7:
+                    adresat.adres = wyraz;
+                    wyraz = "";
+                    adresaci.push_back(adresat);
+                    nrKreski = 0;
+                    break;
+                }
+            }
+        }
+    }
+    plik.close();
+
+    return ostatniNumerId = adresat.id;
+}
+
+
+
+
 
 
 
@@ -238,6 +312,7 @@ int main()
             cout << "Twoj wybor: ";
 
             wybor = wczytajZnak();
+            numerKolejnegoId = wczytajAdresatowZPliku(adresaci, uzytkownicy);
 
             if (wybor == '1')
             {
@@ -270,7 +345,7 @@ int main()
             cin >> wybor;
             if (wybor == '1')
             {
-                //zmianaHasla(uzytkownicy, iloscUzytkownikow, idZalogowanegoUzytkownika);
+                //numerKolejnegoId= dodajAdresata(adresaci, numerKolejnegoId);
             }
             else if (wybor == '2')
             {
@@ -298,7 +373,7 @@ int main()
             }
             else if (wybor == '8')
             {
-                idZalogowanegoUzytkownika = 0
+                idZalogowanegoUzytkownika = 0;
                 exit(0);
             }
         }
