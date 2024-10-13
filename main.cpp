@@ -17,7 +17,7 @@ struct Uzytkownik
 
 struct Adresat
 {
-    int id = 0;
+    int id = 0, idUzytkownika = 0;
     string imie = "", nazwisko = "", numerTelefonu ="", email ="", adres ="";
 };
 
@@ -241,7 +241,7 @@ int wczytajAdresatowZPliku (vector <Adresat> &adresaci, vector <Uzytkownik> &uzy
                     wyraz = "";
                     break;
                 case 2:
-                    uzytkownik.id = stoi(wyraz);
+                    adresat.idUzytkownika = stoi(wyraz);
                     wyraz = "";
                     break;
                 case 3:
@@ -276,7 +276,13 @@ int wczytajAdresatowZPliku (vector <Adresat> &adresaci, vector <Uzytkownik> &uzy
 }
 
 
-void dodajAdresataDoPliku (Adresat adresat, int idZalogowanegoUzytkownika)
+
+
+
+
+
+
+void dodajAdresataDoPliku (Adresat adresat)
 {
     fstream plik;
     plik.open("KsiazkaAdresowa.txt", ios::out | ios::app);
@@ -284,7 +290,7 @@ void dodajAdresataDoPliku (Adresat adresat, int idZalogowanegoUzytkownika)
     if (plik.good() == true)
     {
         plik << adresat.id << "|";
-        plik << idZalogowanegoUzytkownika << "|";
+        plik << adresat.idUzytkownika << "|";
         plik << adresat.imie << "|";
         plik << adresat.nazwisko << "|";
         plik << adresat.numerTelefonu << "|";
@@ -307,9 +313,10 @@ int dodajAdresata (vector <Adresat> &adresaci, int numerKolejnegoId, int idZalog
     Uzytkownik uzytkownik;
 
     adresat.id = numerKolejnegoId + 1;
+    adresat.idUzytkownika = idZalogowanegoUzytkownika;
 
     cout << "Wpisujesz adresatow dla uzytkownika o id:";
-    cout << idZalogowanegoUzytkownika << endl;
+    cout << adresat.idUzytkownika << endl;
 
     cout <<"Podaj imie: ";
     adresat.imie = wczytajLinie();
@@ -335,12 +342,37 @@ int dodajAdresata (vector <Adresat> &adresaci, int numerKolejnegoId, int idZalog
 
     system("pause");
 
-    dodajAdresataDoPliku(adresat, idZalogowanegoUzytkownika);
+    dodajAdresataDoPliku(adresat);
 
     return numerKolejnegoId;
 }
 
 
+void wyswietlWszystkichAdresatow(vector <Adresat> &adresaci, int idZalogowanegoUzytkownika)
+{
+    Adresat adresat;
+
+    for (Adresat adresat : adresaci)
+    {
+       if ( idZalogowanegoUzytkownika == adresat.idUzytkownika)
+       {
+        cout << setw(25)<< left <<"Id: "              << adresat.id<< endl;
+        cout << setw(25)<< left <<"Imie: "            << adresat.imie<< endl;
+        cout << setw(25)<< left <<"Nazwisko: "        << adresat.nazwisko << endl;
+        cout << setw(25)<< left <<"Numer telefonu: "  << adresat.numerTelefonu<< endl;
+        cout << setw(25)<< left <<"Email:"            << adresat.email<< endl;
+        cout << setw(25)<< left <<"Adres:"            << adresat.adres<< endl << endl;
+
+    }
+
+
+    if (adresaci.size() == 0)
+    {
+        cout << "Plik nie zostal jeszcze stworzony" << endl << endl;
+    }
+    }
+    system("pause");
+}
 
 
 
@@ -381,7 +413,7 @@ int main()
             }
             else if (wybor == '2')
             {
-                idZalogowanegoUzytkownika = logowanie (uzytkownicy, iloscUzytkownikow );
+                idZalogowanegoUzytkownika = logowanie (uzytkownicy, iloscUzytkownikow);
             }
             else if (wybor == '9')
             {
@@ -415,7 +447,7 @@ int main()
             }
             else if (wybor == '2')
             {
-                //idZalogowanegoUzytkownika = 0;
+                //
             }
             else if (wybor == '3')
             {
@@ -423,7 +455,7 @@ int main()
             }
             else if (wybor == '4')
             {
-                //
+                wyswietlWszystkichAdresatow(adresaci, idZalogowanegoUzytkownika);
             }
             else if (wybor == '5')
             {
