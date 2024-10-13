@@ -369,29 +369,76 @@ void wyszukajPoImieniu(vector <Adresat> &adresaci, int idZalogowanegoUzytkownika
     {
         for (Adresat adresat : adresaci)
         {
-                if ( (idZalogowanegoUzytkownika == adresat.idUzytkownika) && (adresat.imie == poszukiwaneImie))
-                {
-                    cout << setw(25)<< left <<"Id: "             << adresat.id<< endl;
-                    cout << setw(25)<< left <<"Imie: "           << adresat.imie<< endl;
-                    cout << setw(25)<< left <<"Nazwisko: "       << adresat.nazwisko << endl;
-                    cout << setw(25)<< left <<"Numer telefonu: " << adresat.numerTelefonu<< endl;
-                    cout << setw(25)<< left <<"Email:"           << adresat.email<< endl;
-                    cout << setw(25)<< left <<"Adres:"           << adresat.adres<< endl << endl;
-                    liczbaTakichSamychImion++;
-                }
+            if ( (idZalogowanegoUzytkownika == adresat.idUzytkownika) && (adresat.imie == poszukiwaneImie))
+            {
+                cout << setw(25)<< left <<"Id: "             << adresat.id<< endl;
+                cout << setw(25)<< left <<"Imie: "           << adresat.imie<< endl;
+                cout << setw(25)<< left <<"Nazwisko: "       << adresat.nazwisko << endl;
+                cout << setw(25)<< left <<"Numer telefonu: " << adresat.numerTelefonu<< endl;
+                cout << setw(25)<< left <<"Email:"           << adresat.email<< endl;
+                cout << setw(25)<< left <<"Adres:"           << adresat.adres<< endl << endl;
+                liczbaTakichSamychImion++;
+            }
 
 
         }
-         if (liczbaTakichSamychImion == 0)
-            {
-                cout << "Na liscie nie ma osoba o takim imieniu" << endl << endl;
-            }
+        if (liczbaTakichSamychImion == 0)
+        {
+            cout << "Na liscie nie ma osoba o takim imieniu" << endl << endl;
+        }
 
 
     }
 
     system("pause");
 }
+
+void wyszukajPoNazwisku(vector <Adresat> &adresaci, int idZalogowanegoUzytkownika)
+{
+    Adresat adresat;
+    string poszukiwaneNazwisko = "";
+    int liczbaTakichSamychNazwisk = 0;
+
+    cout << "Podaj nazwisko, ktore chcesz wyszukac: ";
+
+    poszukiwaneNazwisko = wczytajLinie();
+
+    cout << endl;
+
+    if (adresaci.size()== 0)
+    {
+        cout << "Plik nie zostal jeszcze stworzony" << endl << endl;
+    }
+    else
+    {
+        for (Adresat adresat : adresaci)
+        {
+            if ( (idZalogowanegoUzytkownika == adresat.idUzytkownika) && (adresat.nazwisko == poszukiwaneNazwisko))
+            {
+                cout << setw(25)<< left <<"Id: "             << adresat.id<< endl;
+                cout << setw(25)<< left <<"Imie: "           << adresat.imie<< endl;
+                cout << setw(25)<< left <<"Nazwisko: "       << adresat.nazwisko << endl;
+                cout << setw(25)<< left <<"Numer telefonu: " << adresat.numerTelefonu<< endl;
+                cout << setw(25)<< left <<"Email:"           << adresat.email<< endl;
+                cout << setw(25)<< left <<"Adres:"           << adresat.adres<< endl << endl;
+                liczbaTakichSamychNazwisk++;
+            }
+
+
+        }
+        if (liczbaTakichSamychNazwisk == 0)
+        {
+            cout << "Na liscie nie ma osoba o takim imieniu" << endl << endl;
+        }
+
+
+    }
+
+    system("pause");
+}
+
+
+
 
 void wyswietlWszystkichAdresatow(vector <Adresat> &adresaci, int idZalogowanegoUzytkownika)
 {
@@ -419,9 +466,51 @@ void wyswietlWszystkichAdresatow(vector <Adresat> &adresaci, int idZalogowanegoU
     system("pause");
 }
 
+void nadpiszPlikUzytkownik (vector <Uzytkownik> &uzytkownicy)
+{
+    Uzytkownik uzytkownik;
+    fstream plik2;
+    plik2.open("temp.txt", ios::out | ios::app);
+
+    if (plik2.good() == true)
+    {
+        for (Uzytkownik uzytkownik: uzytkownicy)
+        {
+            plik2 << uzytkownik.id << "|";
+            plik2 << uzytkownik.nazwa << "|";
+            plik2 << uzytkownik.haslo << "|" << endl;
+        }
+    }
+    else
+    {
+        cout << "Nie udalo sie otworzyc pliku i zapisac do niego danych." << endl;
+        system("pause");
+    }
+    plik2.close();
+    remove("Uzytkownicy.txt");
+    rename("temp.txt", "Uzytkownicy.txt");
+
+}
 
 
+void zmianaHasla( vector <Uzytkownik> &uzytkownicy, int idZalogowanegoUzytkownika)
+{
+    Uzytkownik uzytkownik;
+    string haslo = "";
 
+    for (vector <Uzytkownik> :: iterator itr = uzytkownicy.begin(); itr!= uzytkownicy.end(); itr++)
+    {
+        if (itr -> id == idZalogowanegoUzytkownika)
+        {
+
+            cout << "Podaj nowe haslo: ";
+            itr -> haslo = wczytajLinie();
+            cout << "Haslo zostalo zmienione" << endl;
+
+        }
+    }
+    nadpiszPlikUzytkownik(uzytkownicy);
+}
 
 
 int main()
@@ -477,7 +566,7 @@ int main()
             cout << "5. Usun adresata" << endl;
             cout << "6. Edytuj adresata" << endl;
             cout << "---------------------" << endl;
-            cout << "7. Zmian haslo" << endl;
+            cout << "7. Zmien haslo" << endl;
             cout << "8. Wyloguj sie" << endl;
             cout << "---------------------" << endl;
             cout << "Twoj wybor: ";
@@ -496,7 +585,7 @@ int main()
             }
             else if (wybor == '3')
             {
-                //
+                wyszukajPoNazwisku(adresaci, idZalogowanegoUzytkownika);
             }
             else if (wybor == '4')
             {
@@ -512,7 +601,7 @@ int main()
             }
             else if (wybor == '7')
             {
-                //
+                zmianaHasla(uzytkownicy, idZalogowanegoUzytkownika);
             }
             else if (wybor == '8')
             {
